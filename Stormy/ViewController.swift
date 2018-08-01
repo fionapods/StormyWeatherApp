@@ -26,6 +26,17 @@ class ViewController: UIViewController {
         let base = URL(string: "https://api.darksky.net/forecast/\(darkSkyApiKey)/")
         let forecastUrl = URL(string: "37.8267,-122.4233", relativeTo: base)
         
+        let request = URLRequest(url: forecastUrl!)
+        let session = URLSession(configuration: .default)
+        
+        
+        let dataTask = session.dataTask(with: request) { data, reponse, error in
+            print(data)
+        }
+      
+        dataTask.resume()
+        
+        
         let currentWeather = CurrentWeather(temperature: 85.5, humidity: 0.8, percipProbability: 0.1, summary: "Hot", icon: "clear-day")
         let viewModel = CurrentWeatherViewModel(model: currentWeather)
         
