@@ -18,37 +18,42 @@ class ViewController: UIViewController {
     @IBOutlet weak var refreshButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    fileprivate let darkSkyApiKey = "358449ecd6246179d9bb50e954aa939b"
+    let client = DarkSkyAPIClient()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let base = URL(string: "https://api.darksky.net/forecast/\(darkSkyApiKey)/")
-        let forecastUrl = URL(string: "37.8267,-122.4233", relativeTo: base)
-        
-        let request = URLRequest(url: forecastUrl!)
-        let session = URLSession(configuration: .default)
-        
-        
-        let dataTask = session.dataTask(with: request) { data, reponse, error in
-            print(data)
-        }
-      
-        dataTask.resume()
-        
-        
-        let currentWeather = CurrentWeather(temperature: 85.5, humidity: 0.8, percipProbability: 0.1, summary: "Hot", icon: "clear-day")
-        let viewModel = CurrentWeatherViewModel(model: currentWeather)
-        
-        displayWeather(using: viewModel)
+        getCurrentWeather()
     }
     
     func displayWeather(using viewModel: CurrentWeatherViewModel) {
         currentTemperatureLabel.text = viewModel.temperature
         currentHumidityLabel.text = viewModel.humiditiy
-        currentTemperatureLabel.text = viewModel.percipitationProbability
+        currentPrecipitationLabel.text = viewModel.precipitationProbability
         currentWeatherIcon.image = viewModel.icon
         currentSummaryLabel.text = viewModel.summary
     }
+    
+    @IBAction func getCurrentWeather() {
+        toggleRefreshAnimation(on: true)
+        
+        client.getCurrentWeather(at: Coordinate.alcatrazIsland) { [unowned self] currentWeather, error in
+            if let currentWeather = currentWeather {
+                let viewModel = CurrentWeatherViewModel(model: currentWeather)
+                self.displayWeather(using: viewModel)
+                self.toggleRefreshAnimation(on: false)
+            }
+        }
+    }
+    
+    func toggleRefreshAnimation (on: Bool) {
+        refreshButton.isHidden = on
+        
+        if on {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+        }
+    }
 }
+
 

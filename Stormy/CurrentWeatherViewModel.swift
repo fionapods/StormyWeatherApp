@@ -12,7 +12,7 @@ import UIKit
 struct CurrentWeatherViewModel {
     let temperature: String
     let humiditiy: String
-    let percipitationProbability: String
+    let precipitationProbability: String
     let summary: String
     let icon: UIImage
  
@@ -23,8 +23,8 @@ struct CurrentWeatherViewModel {
         let humidityPercentValue = Int(model.humidity * 100)
         self.humiditiy = "\(humidityPercentValue)%"
         
-        let percipitationPercentValue = Int(model.percipProbability * 100)
-        self.percipitationProbability = "\(percipitationPercentValue)%"
+        let precipitationPercentValue = Int(model.precipProbability * 100)
+        self.precipitationProbability = "\(precipitationPercentValue)%"
         
         self.summary = model.summary
         self.icon = model.iconImage

@@ -9,10 +9,10 @@
 import Foundation
 import UIKit
 
-struct CurrentWeather {
+struct CurrentWeather: Codable {
     let temperature: Double
     let humidity: Double
-    let percipProbability: Double
+    let precipProbability: Double
     let summary: String
     let icon: String
 }
@@ -34,23 +34,3 @@ extension CurrentWeather {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
